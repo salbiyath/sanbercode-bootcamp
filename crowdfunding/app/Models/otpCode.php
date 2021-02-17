@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Traits\UsesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use App\Traits\UsesUuid;
 
-class Role extends Model
+class otpCode extends Model
 {
     use HasFactory, UsesUuid;
 

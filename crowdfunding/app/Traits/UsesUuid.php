@@ -1,22 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-
-class Otp extends Model
+/**
+ * to automatically generates uuid
+ */
+trait UsesUuid
 {
-    use HasFactory;
-
-    /**
-     * The "booting" function of model.
-     *
-     * @return void
-     */
-    protected static function boot()
+    public static function bootUsesUuid()
     {
         static::creating(function ($model) {
             if (!$model->getKey()) {
@@ -26,7 +19,7 @@ class Otp extends Model
     }
 
     /**
-     * Get the value indicating whether the IDs incrementing.
+     * Get the value indicating whether the IDs are incrementing.
      *
      * @return bool
      */
@@ -44,13 +37,4 @@ class Otp extends Model
     {
         return 'string';
     }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'body'
-    ];
 }
