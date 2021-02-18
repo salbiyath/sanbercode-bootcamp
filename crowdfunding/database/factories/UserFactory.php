@@ -5,9 +5,20 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+
 
 class UserFactory extends Factory
 {
+    /**
+     * setting default value for role_id on users table
+     *
+     * @var string
+     */
+    protected $defaultRoleId = DB::table('roles')
+        ->where('name', '=', 'user')
+        ->get();
+
     /**
      * The name of the factory's corresponding model.
      *

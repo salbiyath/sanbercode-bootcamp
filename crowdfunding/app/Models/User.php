@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class User extends Authenticatable
@@ -42,4 +43,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isVerified()
+    {
+        if ($this->email_verified_at === null) {
+            return false;
+        }
+        return true;
+    }
+
+    public function isAdmin()
+    {
+        $roleIdAdmin = DB::table('roles')
+            ->where('name', '=', 'admin')
+            ->value('id');
+
+        if ($this->role_id === $roleIdAdmin) {
+            return true;
+        }
+        return false;
+    }
 }
