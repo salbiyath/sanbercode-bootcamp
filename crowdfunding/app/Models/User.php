@@ -44,6 +44,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function get_user_role_id()
+    {
+        $roleIdUser = DB::table('roles')
+            ->where('name', '=', 'user')
+            ->value('id');
+
+        return $roleIdUser;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->role_id = $model->get_user_role_id();
+        });
+    }
+
     public function isVerified()
     {
         if ($this->email_verified_at === null) {
