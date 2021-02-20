@@ -16,12 +16,8 @@ class AddRoleIdToUsersTable extends Migration
      */
     public function up()
     {
-        $defaultRoleId = DB::table('roles')
-            ->where('name', '=', 'user')
-            ->value('id');
-
         Schema::table('users', function (Blueprint $table) {
-            $table->uuid('role_id')->default($defaultRoleId);
+            $table->uuid('role_id');
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
         });
     }
@@ -34,8 +30,8 @@ class AddRoleIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('role_id');
-            $table->dropColumn('role_id');
+            $table->dropForeign(['role_id']);
+            $table->dropColumn(['role_id']);
         });
     }
 }
