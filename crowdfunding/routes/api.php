@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth;
 
 
 /*
@@ -20,4 +19,4 @@ use App\Http\Controllers\Auth;
 //     return $request->user();
 // });
 
-// Route::post('register', 'RegisterController');
+Route::post('register', 'Auth\RegisterController');
