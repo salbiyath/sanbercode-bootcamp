@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Database\QueryException;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterController extends Controller
 {
@@ -14,24 +16,26 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(RegisterRequest $request)
     {
-        request()->validate([
-            'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:6']
-        ]);
-
         try {
-            user::creating([
-                'name' => request('name'),
-                'email' => request('email'),
-                'password' => bcrypt('password')
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password)
             ]);
 
-            return ""
-        } catch (\Throwable $th) {
-            //throw $th;
+            $response = [
+                'message' => 'Register success',
+                'data' => $user
+            ];
+
+            return response()->json($response, Response::HTTP_CREATED);
+        } catch (QueryException $e) {
+            dd($e);
+            return response()->json([
+                'message' => "Failed $e->errorInfo"
+            ]);
         }
     }
 }
