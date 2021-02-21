@@ -22,13 +22,16 @@ class RegisterController extends Controller
             'password' => ['required', 'min:6']
         ]);
 
-        user::creating([
-            'name' => request('name'),
-            'email' => request('email'),
-            'password' => bcrypt('password')
-        ]);
+        try {
+            user::creating([
+                'name' => request('name'),
+                'email' => request('email'),
+                'password' => bcrypt('password')
+            ]);
 
-
-        return "Congratulation, Register success!";
+            return ""
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }
