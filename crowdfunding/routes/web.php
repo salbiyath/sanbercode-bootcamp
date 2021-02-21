@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,16 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verifEmail'])->group(function () {
-    Route::get('/route-1', [TestController::class, 'verifyEmail']);
-});
-Route::middleware(['auth', 'verifyAdmin', 'verifEmail'])->group(function () {
-    Route::get('/route-2', [TestController::class, 'verifyAdmin']);
-});
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
