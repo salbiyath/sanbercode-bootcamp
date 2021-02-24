@@ -23,16 +23,15 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
+        $credentials = $request->only('email', 'password');
+
         try {
 
-            if (!$token = auth()->attempt($request->only('email', 'password'))) {
-                return [
-                    'response_code' => '01',
-                    'response_message' => 'Wrong Email or Password'
-                ];
+            if (!$token = auth()->attempt($credentials)) {
+                return response()->json(['Error' => 'Unauthorized']);
             }
 
-            $user = User::where('email', '=', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
             // make response
             $response = [

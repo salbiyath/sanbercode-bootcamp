@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\Illuminate\Mail\Events\UserRegisteredEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Models\otpCode;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Symfony\Component\HttpFoundation\Response;
+use App\Mail\UserRegisteredMail;
+use App\Notifications\WelcomeEmailNotification;
+use App\Providers\UserRegisteredEvent as ProvidersUserRegisteredEvent;
+use Illuminate\Support\Facades\Mail;
+
 
 class RegisterController extends Controller
 {
@@ -26,15 +31,14 @@ class RegisterController extends Controller
                 'email' => $request->email,
             ]);
 
-            // Set expired time for OTP
-            $valid_until = date('Y-m-d H:i:s', strtotime('+5 minutes', strtotime(now())));
+            // event(new ProvidersUserRegisteredEvent($user));
 
-            // Store OTP
-            $otp_code = otpCode::create([
-                'otp' => rand(0, 100000),
-                'user_id' => $user->id,
-                'valid_until' => $valid_until
-            ]);
+            ProvidersUserRegisteredEvent::dispatch($user);
+
+            // Mail::to($user)->send(new UserRegisteredMail($user));
+
+            // $user->notify(new WelcomeEmailNotification());
+
 
             // make response
             $response = [

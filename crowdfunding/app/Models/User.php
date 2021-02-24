@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -58,6 +59,27 @@ class User extends Authenticatable implements JWTSubject
         static::creating(function ($model) {
             $model->role_id = $model->get_user_role_id();
         });
+
+        static::created(function ($model) {
+            $model->generate_otp_code();
+        });
+    }
+
+    public function generate_otp_code()
+    {
+        do {
+
+            $random = mt_rand(100000, 999999);
+            $check = OtpCode::where('otp', $random)->first();
+        } while ($check);
+
+        $now = Carbon::now();
+
+        // create code otp
+        $otp_code = OtpCode::updateOrCreate(
+            ['user_id' => $this->id],
+            ['otp' => $random, 'valid_until' => $now->addMinutes(5)]
+        );
     }
 
     public function isVerified()
