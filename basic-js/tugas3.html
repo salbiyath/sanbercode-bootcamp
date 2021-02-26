@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tugas 3</title>
+  </head>
+  <body>
+    <script>
+      // Soal nomor 1
+      // Mengubah fungsi menjadi fungsi arrow
+
+      const golden = () => {
+        console.log("this is golden");
+      };
+
+      golden();
+
+      // Soal nomor 2
+      // Sederhanakan menjadi object literal di ES6
+
+      const newFunction = (firstName, lastName) => {
+        return {
+          firstName,
+          lastName,
+          fullName: () => {
+            console.log(firstName + " " + lastName);
+            return;
+          },
+        };
+      };
+
+      newFunction("William", "Imoh").fullName();
+
+      // Soal nomor 3
+      // Destructing
+
+      const newObject = {
+        firstName: "Harry",
+        lastName: "Potter Holt",
+        destination: "Hogwarts React Conf",
+        occupation: "Deve-wizard Avocado",
+        spell: "Vimulus Renderus!!!",
+      };
+
+      let { firstName, lastName, destination, occupation, spell } = newObject;
+
+      // Driver code
+      console.log(firstName, lastName, destination, occupation);
+
+      // Soal nomor 4
+      // Array Spreading
+
+      const west = ["Will", "Chris", "Sam", "Holly"];
+      const east = ["Gill", "Brian", "Noel", "Maggie"];
+
+      const combined = [...west, ...east];
+      console.log(combined);
+    </script>
+  </body>
+</html>
